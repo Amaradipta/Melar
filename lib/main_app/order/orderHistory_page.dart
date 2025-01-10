@@ -17,28 +17,17 @@ class OrderHistoryPage extends StatefulWidget {
 
 class _OrderHistoryPageState extends State<OrderHistoryPage> {
   List<Map<String, String>> orders = [
-    // Initial order list (with 'Belum Dibayar' status)
     {
-      'title': 'Order #12345',
-      'description': 'Deskripsi pesanan yang statusnya: Belum Dibayar',
-      'date': '2025-01-09',
+      'title': '[RENTAL] Tent outdoor for 4 people, 1 week duration [FREE SHIPPING]',
+      'description': 'Rp. 140,000 - OnDaGround',
+      'date': DateTime.now().toString().split(' ')[0],
       'status': 'Belum Dibayar',
     },
-    {
-      'title': 'Order #12346',
-      'description': 'Deskripsi pesanan yang statusnya: Belum Dibayar',
-      'date': '2025-01-08',
-      'status': 'Belum Dibayar',
-    },
-  ];
+  ]; // Static orders data
 
   @override
   void initState() {
     super.initState();
-    // Check if there is a new order and add it to the list
-    if (widget.newOrder != null) {
-      orders.insert(0, widget.newOrder!);
-    }
   }
 
   @override
@@ -121,7 +110,6 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                 );
                 break;
               default:
-              // Stay on Order History
                 break;
             }
           },
@@ -193,7 +181,9 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                 orderId: orderId,
                 onOrderPlaced: (String orderId) {
                   setState(() {
-                    orders.firstWhere((order) => order['title'] == orderId)['status'] = 'Dikemas';
+                    // Update the status of the order to 'Dikemas' after payment
+                    final order = orders.firstWhere((order) => order['title'] == orderId);
+                    order['status'] = 'Dikemas';
                   });
                 },
               ),
@@ -213,9 +203,12 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis, // Handles overflow by truncating the text
+                  ),
                 ),
                 Text(
                   status,
@@ -232,15 +225,76 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
               style: const TextStyle(color: Colors.black54),
             ),
             const SizedBox(height: 8),
+            // Photo placed here before the date
+            Image.asset(
+              'assets/images/tent.png',
+              width: 100, // Adjust size as needed
+              height: 100, // Adjust size as needed
+              fit: BoxFit.cover, // Optional: To make the image fill the box
+            ),
+            const SizedBox(height: 8),
             Text(
               date,
               style: const TextStyle(color: Colors.grey, fontSize: 12),
             ),
+            const SizedBox(height: 12),
+            // Add payment and cancel buttons here
+            if (status == 'Belum Dibayar') ...[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Button to cancel the order
+                  ElevatedButton(
+                    onPressed: () {
+                      // Implement your cancel action here
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red, // Red color for the button
+                      foregroundColor: Colors.white, // White color for the text
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                    child: const Text('Batalkan Pesanan'),
+                  ),
+                  // Button to pay
+                  ElevatedButton(
+                    onPressed: () {
+                      // Navigate to PaymentPage
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PaymentPage(
+                            orderId: orderId,
+                            onOrderPlaced: (String orderId) {
+                              setState(() {
+                                // Update the status of the order to 'Dikemas' after payment
+                                final order = orders.firstWhere((order) => order['title'] == orderId);
+                                order['status'] = 'Dikemas';
+                              });
+                            },
+                          ),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green, // Green color for the button
+                      foregroundColor: Colors.white, // White color for the text
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                    child: const Text('Bayar'),
+                  ),
+                ],
+              ),
+            ],
           ],
         ),
       ),
     );
   }
+
 
   Color _getStatusColor(String status) {
     switch (status) {
