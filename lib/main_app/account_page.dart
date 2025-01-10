@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:melar/main_app/order/orderHistory_page.dart';
 import 'bookmark_page.dart';
 import 'cart_page.dart';
 import 'home_page.dart';
 import 'notification_page.dart';
+ // Import halaman OrderHistoryPage
 
 class AccountPage extends StatelessWidget {
   const AccountPage({Key? key}) : super(key: key);
@@ -152,7 +154,17 @@ class AccountPage extends StatelessWidget {
     return Column(
       children: [
         _buildMenuItem('Edit profile', Icons.info),
-        _buildMenuItem('My order', Icons.receipt),
+        _buildMenuItem(
+          'My order', 
+          Icons.history, 
+          onTap: () {
+            // Arahkan ke halaman OrderHistoryPage
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => OrderHistoryPage()),
+            );
+          }
+        ),
         _buildMenuItem('Settings', Icons.settings),
         _buildMenuItem('Address', Icons.location_on),
         _buildMenuItem('Share shop', Icons.share),
@@ -169,26 +181,29 @@ class AccountPage extends StatelessWidget {
     );
   }
 
-  Widget _buildMenuItem(String title, IconData icon) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 8.0),
-      padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-      decoration: BoxDecoration(
-        color: Colors.green.shade100,
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Icon(icon, color: Colors.green),
-              const SizedBox(width: 16),
-              Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
-            ],
-          ),
-          const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.green),
-        ],
+  Widget _buildMenuItem(String title, IconData icon, {VoidCallback? onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8.0),
+        padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+        decoration: BoxDecoration(
+          color: Colors.green.shade100,
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Icon(icon, color: Colors.green),
+                const SizedBox(width: 16),
+                Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+              ],
+            ),
+            const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.green),
+          ],
+        ),
       ),
     );
   }

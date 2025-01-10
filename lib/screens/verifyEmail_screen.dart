@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // Add this import for FilteringTextInputFormatter
+import 'ResetPasswordScreen.dart';
 
 class VerifyEmailScreen extends StatefulWidget {
   final String email; // Constructor to receive email
@@ -133,6 +134,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                     child: ElevatedButton(
                       onPressed: () {
                         // Verify action
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => ResetPasswordScreen()), // Mengarah ke HomePage
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF3B8132),

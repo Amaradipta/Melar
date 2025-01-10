@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'welcome_screen.dart'; // Pastikan Anda mengimpor WelcomeScreen
-import 'forgot_screen.dart';  // Pastikan Anda mengimpor ForgotScreen
+import 'forgot_screen.dart';
+import '../main_app/home_page.dart';  // Pastikan Anda mengimpor ForgotScreen
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -146,7 +147,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: screenHeight * 0.07,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Log In action
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()), // Mengarah ke HomePage
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFF3B8132),

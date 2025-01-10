@@ -187,7 +187,7 @@ class BookmarkPage extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: 'Bookmark'),
           BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notification'),
+          BottomNavigationBarItem(icon: Icon(Icons.mail), label: 'Inbox'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
         ],
       ),
