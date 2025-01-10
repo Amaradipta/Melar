@@ -1,35 +1,34 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-class PaymentPage extends StatefulWidget {
+class PackingPage extends StatefulWidget {
   final String orderId;
-  final Function(String orderId) onOrderPlaced; // Callback function to update status in orderHistory_page.dart
+  final Function(String orderId) onOrderUpdated; // Callback function to update status in orderHistory_page.dart
 
-  const PaymentPage({
+  const PackingPage({
     Key? key,
     required this.orderId,
-    required this.onOrderPlaced, // Accept the callback function
+    required this.onOrderUpdated, // Accept the callback function
   }) : super(key: key);
 
   @override
-  _PaymentPageState createState() => _PaymentPageState();
+  _PackingPageState createState() => _PackingPageState();
 }
 
-class _PaymentPageState extends State<PaymentPage> {
-  String? selectedPaymentOption;
-  late DateTime orderTime;
+class _PackingPageState extends State<PackingPage> {
+  late DateTime packingStartTime;
   late Timer _timer;
 
   @override
   void initState() {
     super.initState();
-    orderTime = DateTime.now();
+    packingStartTime = DateTime.now();
     _startCountdown();
   }
 
   void _startCountdown() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (DateTime.now().isAfter(orderTime.add(Duration(hours: 24)))) {
+      if (DateTime.now().isAfter(packingStartTime.add(Duration(hours: 48)))) {
         _timer.cancel(); // Stop the timer when the countdown reaches zero
       }
       setState(() {}); // Update the UI every second
@@ -55,7 +54,7 @@ class _PaymentPageState extends State<PaymentPage> {
               },
             ),
             SizedBox(width: 8),
-            Text('Checkout', style: TextStyle(color: Colors.green)),
+            Text('Sedang Dikemas', style: TextStyle(color: Colors.green)),
           ],
         ),
         backgroundColor: Colors.white,
@@ -101,7 +100,7 @@ class _PaymentPageState extends State<PaymentPage> {
             // Countdown Timer Section
             Center(
               child: Text(
-                'Pay before 24 hours from order placement',
+                'Menunggu Seller mengirim pesanan anda',
                 style: TextStyle(fontSize: 14, color: Colors.black54),
               ),
             ),
@@ -127,39 +126,25 @@ class _PaymentPageState extends State<PaymentPage> {
             Divider(color: Colors.green, thickness: 2),
             SizedBox(height: 20),
 
-            // Payment Options Section
-            _buildPaymentOptionRow(
-              icon: Icons.account_balance_wallet,
-              label: 'Transfer Bank',
-              value: 'Transfer Bank',
-            ),
-            _buildPaymentOptionRow(
-              icon: Icons.credit_card,
-              label: 'Kartu Kredit/Debit',
-              value: 'Kartu Kredit/Debit',
-            ),
-            _buildPaymentOptionRow(
-              icon: Icons.storefront,
-              label: 'Bayar Tunai di Mitra/Agen',
-              value: 'Bayar Tunai di Mitra/Agen',
-            ),
-            _buildPaymentOptionRow(
-              icon: Icons.money_off,
-              label: 'COD',
-              value: 'COD',
+            // Payment Status Section
+            Center(
+              child: Text(
+                'Pembayaran: Sudah Dibayar', // Update with actual payment status
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.green),
+              ),
             ),
             SizedBox(height: 20),
 
-            // Place Order Button
+            // Button to update order status
             Center(
               child: ElevatedButton(
                 onPressed: () {
                   // Trigger the callback to update the status of the order
-                  widget.onOrderPlaced(widget.orderId);  // Call the callback function
+                  widget.onOrderUpdated(widget.orderId);  // Call the callback function
                   Navigator.pop(context);  // Go back to the previous page
-                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Order placed successfully!')));
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Pesanan berhasil diselesaikan!')));
                 },
-                child: Text('Place Order'),
+                child: Text('Selesaikan Pesanan'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
                   padding: EdgeInsets.symmetric(vertical: 16),
@@ -177,43 +162,9 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 
-  Widget _buildPaymentOptionRow({required IconData icon, required String label, required String value}) {
-    return InkWell(
-      onTap: () {
-        setState(() {
-          selectedPaymentOption = value;
-        });
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
-        margin: EdgeInsets.symmetric(vertical: 8.0),
-        decoration: BoxDecoration(
-          color: selectedPaymentOption == value ? Colors.green.shade100 : Colors.white,
-          border: Border.all(
-            color: selectedPaymentOption == value ? Colors.green : Colors.green.shade300,
-          ),
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Row(
-          children: [
-            Icon(icon, color: selectedPaymentOption == value ? Colors.green : Colors.black),
-            SizedBox(width: 8),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 16,
-                color: selectedPaymentOption == value ? Colors.green : Colors.black,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   String _getCountdown() {
     final DateTime now = DateTime.now();
-    final Duration countdown = orderTime.add(Duration(hours: 24)).difference(now);
+    final Duration countdown = packingStartTime.add(Duration(hours: 48)).difference(now);
 
     if (countdown.isNegative) {
       return 'Time is up!';

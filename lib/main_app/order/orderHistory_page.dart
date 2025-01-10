@@ -4,6 +4,7 @@ import 'package:melar/main_app/cart_page.dart';
 import 'package:melar/main_app/home_page.dart';
 import 'package:melar/main_app/account_page.dart';
 import 'payment_page.dart'; // Import PaymentPage
+import 'packing_page.dart'; // Import PackingPage
 
 class OrderHistoryPage extends StatefulWidget {
   final Map<String, String>? newOrder;
@@ -168,22 +169,37 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
       }) {
     return GestureDetector(
       onTap: () {
-        // Arahkan ke halaman pembayaran
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PaymentPage(
-              orderId: orderId,
-              // Pass an empty string or handle the expected String parameter
-              onOrderPlaced: (String orderId) {
-                setState(() {
-                  // Find the order in the list and update its status
-                  orders.firstWhere((order) => order['title'] == orderId)['status'] = 'Dikemas';
-                });
-              },
+        if (status == 'Dikemas') {
+          // Navigate to PackingPage if status is 'Dikemas'
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PackingPage(
+                orderId: orderId,
+                onOrderUpdated: (updatedOrderId) {
+                  setState(() {
+                    orders.firstWhere((order) => order['title'] == updatedOrderId)['status'] = 'Selesai';
+                  });
+                },
+              ),
             ),
-          ),
-        );
+          );
+        } else {
+          // Navigate to PaymentPage for other statuses
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PaymentPage(
+                orderId: orderId,
+                onOrderPlaced: (String orderId) {
+                  setState(() {
+                    orders.firstWhere((order) => order['title'] == orderId)['status'] = 'Dikemas';
+                  });
+                },
+              ),
+            ),
+          );
+        }
       },
       child: Container(
         padding: const EdgeInsets.all(16.0),
@@ -225,7 +241,6 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
       ),
     );
   }
-
 
   Color _getStatusColor(String status) {
     switch (status) {
