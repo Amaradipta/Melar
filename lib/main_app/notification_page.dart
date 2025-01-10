@@ -113,7 +113,7 @@ class NotificationPage extends StatelessWidget {
             BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: 'Bookmark'),
             BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Notification'),
+            BottomNavigationBarItem(icon: Icon(Icons.notifications_active), label: 'Notif'),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
           ],
         ),
