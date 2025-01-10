@@ -14,7 +14,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
   DateTime? rentalEndDate;
   TimeOfDay? rentalTime = TimeOfDay.now();
   String shippingAddress = "Jl. Kebon Jeruk No. 24, Jakarta";
-  String paymentMethod = "Bank Transfer";
 
   double get totalPrice {
     if (rentalStartDate == null || rentalEndDate == null) {
@@ -91,37 +90,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
     }
   }
 
-  void selectPaymentMethod(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              title: const Text("Bank Transfer"),
-              onTap: () {
-                setState(() {
-                  paymentMethod = "Bank Transfer";
-                });
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text("Cash on Delivery (COD)"),
-              onTap: () {
-                setState(() {
-                  paymentMethod = "COD";
-                });
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -186,13 +154,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
               trailing: const Icon(Icons.edit),
               onTap: () => editShippingAddress(context),
             ),
-            // Payment Method Section
-            ListTile(
-              title: const Text("Payment Method"),
-              subtitle: Text(paymentMethod),
-              trailing: const Icon(Icons.payment),
-              onTap: () => selectPaymentMethod(context),
-            ),
+            
             const Divider(),
             // Total Price Section
             ListTile(

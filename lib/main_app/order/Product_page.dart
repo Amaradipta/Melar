@@ -1,15 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:melar/main_app/order/checkout_page.dart';
 
-class ProductPage extends StatelessWidget {
+class ProductPage extends StatefulWidget {
   const ProductPage({Key? key}) : super(key: key);
+
+  @override
+  _ProductPageState createState() => _ProductPageState();
+}
+
+class _ProductPageState extends State<ProductPage> {
+  final List<String> productImages = [
+    'assets/images/tent.png',
+    'assets/images/suit.png',
+    'assets/images/backpack.png',
+  ];
+
+  int _currentPage = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 0,
+        elevation: 1,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.green),
           onPressed: () {
@@ -30,125 +43,156 @@ class ProductPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Gambar Produk
-            Container(
+            SizedBox(
               height: 250,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/images/tent.png'), // Ganti dengan gambar produk
-                  fit: BoxFit.cover,
+              child: Stack(
+                children: [
+                  PageView.builder(
+                    itemCount: productImages.length,
+                    onPageChanged: (index) {
+                      setState(() {
+                        _currentPage = index;
+                      });
+                    },
+                    itemBuilder: (context, index) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(productImages[index]),
+                            fit: BoxFit.cover
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+
+
+                  Positioned(
+                  bottom: 10, // Jarak dari bawah
+                  left: 0,
+                  right: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center, // Memastikan indikator berada di tengah
+                    children: productImages.map((url) {
+                      int index = productImages.indexOf(url);
+                      return Container(
+                        width: 8.0,
+                        height: 8.0,
+                        margin: const EdgeInsets.symmetric(horizontal: 2.0),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _currentPage == index
+                              ? Colors.green
+                              : Colors.grey.shade400,
+                        ),
+                      );
+                    }).toList(),
+                  ),
                 ),
-              ),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.share, color: Colors.green),
-                      onPressed: () {
-                        // Aksi share
-                      },
+
+
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildActionIcon(Icons.share, "Share"),
+                        _buildActionIcon(Icons.bookmark_border, "Bookmark"),
+                      ],
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.bookmark_border, color: Colors.green),
-                      onPressed: () {
-                        // Aksi bookmark
-                      },
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
 
-            // Informasi Produk
+            // Informasi Toko
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        children: [
-                          CircleAvatar(
-                            backgroundImage: AssetImage('assets/images/store.png'), // Gambar toko
-                            radius: 20,
-                          ),
-                          const SizedBox(width: 8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text('OnDaGround',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16)),
-                              Text('London',
-                                  style: TextStyle(color: Colors.grey)),
-                            ],
-                          ),
-                        ],
+                      CircleAvatar(
+                        backgroundImage: const AssetImage('assets/images/store.png'),
+                        radius: 20,
                       ),
-                      Row(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              // Navigasi ke profil toko
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green.shade100,
-                              foregroundColor: Colors.green,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
+                      const SizedBox(width: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            'OnDaGround',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
                             ),
-                            child: const Text('See profile'),
                           ),
-                          const SizedBox(width: 8),
-                          ElevatedButton(
-                            onPressed: () {
-                              // Aksi kirim pesan ke toko
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green.shade100,
-                              foregroundColor: Colors.green,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                            ),
-                            child: const Text('Message'),
+                          Text(
+                            'London',
+                            style: TextStyle(color: Colors.grey, fontSize: 14),
                           ),
                         ],
                       ),
                     ],
                   ),
                   const SizedBox(height: 16),
-                  const Text(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildCustomButton(
+                        text: "See Profile",
+                        onPressed: () {},
+                        backgroundColor: Colors.green.shade50,
+                        textColor: Colors.green,
+                      ),
+                      _buildCustomButton(
+                        text: "Message",
+                        onPressed: () {},
+                        backgroundColor: Colors.green.shade50,
+                        textColor: Colors.green,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const Divider(),
+
+            // Informasi Produk
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text(
                     '[RENTAL] Tent outdoor for 4 people, 1 week duration [FREE SHIPPING]',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
+                  SizedBox(height: 8),
+                  Text(
                     'Outdoor',
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(color: Colors.grey, fontSize: 14),
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
+                  SizedBox(height: 8),
+                  Text(
                     'Rp. 140,000',
                     style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Colors.green),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Colors.green,
+                    ),
                   ),
-                  const SizedBox(height: 16),
-                  const Text(
+                  SizedBox(height: 16),
+                  Text(
                     'This section is the description about the product that you want to rent, explanation about the product condition, how to use, detailed information about the product are written in this section with maximum 500 words.',
                     style: TextStyle(fontSize: 14, color: Colors.black87),
                   ),
                 ],
               ),
             ),
+            const Divider(),
 
             // Produk Terkait
             Padding(
@@ -159,7 +203,7 @@ class ProductPage extends StatelessWidget {
                   const Text(
                     'You might also like',
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 16),
+                        fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                   const SizedBox(height: 16),
                   SizedBox(
@@ -167,9 +211,12 @@ class ProductPage extends StatelessWidget {
                     child: ListView(
                       scrollDirection: Axis.horizontal,
                       children: [
-                        _buildRelatedProduct(context, 'assets/images/tent.png', 'Rp. 140,000'),
-                        _buildRelatedProduct(context, 'assets/images/backpack.png', 'Rp. 80,000'),
-                        _buildRelatedProduct(context, 'assets/images/suit.png', 'Rp. 50,000'),
+                        _buildRelatedProduct(
+                            context, 'assets/images/tent.png', 'Rp. 140,000'),
+                        _buildRelatedProduct(
+                            context, 'assets/images/backpack.png', 'Rp. 80,000'),
+                        _buildRelatedProduct(
+                            context, 'assets/images/suit.png', 'Rp. 50,000'),
                       ],
                     ),
                   ),
@@ -182,7 +229,7 @@ class ProductPage extends StatelessWidget {
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
-          color: Colors.green.shade100,
+          color: Colors.green.shade50,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(16.0),
             topRight: Radius.circular(16.0),
@@ -191,35 +238,23 @@ class ProductPage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ElevatedButton(
-              onPressed: () {
-                // Aksi menambahkan ke keranjang
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child: const Text('Add to cart'),
+            _buildCustomButton(
+              text: "Add to Cart",
+              onPressed: () {},
+              backgroundColor: Colors.green,
+              textColor: Colors.white,
             ),
-            ElevatedButton(
+            _buildCustomButton(
+              text: "Checkout",
               onPressed: () {
                 Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => CheckoutPage()),
-            );
+                  context,
+                  MaterialPageRoute(builder: (context) => CheckoutPage()),
+                );
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                foregroundColor: Colors.green,
-                side: const BorderSide(color: Colors.green),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child: const Text('Checkout'),
+              backgroundColor: Colors.white,
+              textColor: Colors.green,
+              borderColor: Colors.green,
             ),
           ],
         ),
@@ -227,7 +262,43 @@ class ProductPage extends StatelessWidget {
     );
   }
 
-  Widget _buildRelatedProduct(BuildContext context, String imagePath, String price) {
+  Widget _buildActionIcon(IconData icon, String tooltip) {
+    return IconButton(
+      tooltip: tooltip,
+      icon: Icon(icon, color: Colors.green),
+      onPressed: () {
+        // Aksi terkait
+      },
+    );
+  }
+
+  Widget _buildCustomButton({
+    required String text,
+    required VoidCallback onPressed,
+    required Color backgroundColor,
+    required Color textColor,
+    Color? borderColor,
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        minimumSize: const Size(140, 36),
+        backgroundColor: backgroundColor,
+        foregroundColor: textColor,
+        side: borderColor != null ? BorderSide(color: borderColor) : null,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+      ),
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  Widget _buildRelatedProduct(
+      BuildContext context, String imagePath, String price) {
     return GestureDetector(
       onTap: () {
         // Navigasi ke halaman produk terkait
@@ -236,7 +307,7 @@ class ProductPage extends StatelessWidget {
         margin: const EdgeInsets.only(right: 16.0),
         width: 100,
         decoration: BoxDecoration(
-          color: Colors.green.shade100,
+          color: Colors.green.shade50,
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: Column(
