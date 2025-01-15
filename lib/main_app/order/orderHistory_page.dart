@@ -9,7 +9,7 @@ import 'packing_page.dart'; // Import PackingPage
 class OrderHistoryPage extends StatefulWidget {
   final Map<String, String>? newOrder;
 
-  const OrderHistoryPage({Key? key, this.newOrder}) : super(key: key);
+  const OrderHistoryPage({super.key, this.newOrder});
 
   @override
   _OrderHistoryPageState createState() => _OrderHistoryPageState();
@@ -36,11 +36,11 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
       length: 5,
       child: Scaffold(
         appBar: AppBar(
-          title: Row(
+          title: const Row(
             children: [
-              const Icon(Icons.arrow_back, color: Colors.green),
-              const SizedBox(width: 8),
-              const Text(
+              Icon(Icons.arrow_back, color: Colors.green),
+              SizedBox(width: 8),
+              Text(
                 'Order History',
                 style: TextStyle(color: Colors.green),
               ),
@@ -50,15 +50,15 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
           elevation: 0,
           leadingWidth: 0,
           leading: const SizedBox(),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(48.0),
+          bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(48.0),
             child: TabBar(
               isScrollable: true,
               labelColor: Colors.green,
               unselectedLabelColor: Colors.grey,
               indicatorColor: Colors.green,
               indicatorWeight: 2.0,
-              tabs: const [
+              tabs: [
                 Tab(text: 'Belum Dibayar'),
                 Tab(text: 'Dikemas'),
                 Tab(text: 'Dikirim'),

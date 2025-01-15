@@ -6,7 +6,7 @@ import 'account_page.dart';
 import 'order/Product_page.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +62,9 @@ class HomePage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: const Text(
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Text(
                 'Suggested for you',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -191,7 +191,7 @@ class HomePage extends StatelessWidget {
         // Navigate to the product page
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ProductPage()), // Implement ProductPage
+          MaterialPageRoute(builder: (context) => const ProductPage()), // Implement ProductPage
         );
       },
       child: Container(

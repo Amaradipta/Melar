@@ -7,7 +7,7 @@ import 'notification_page.dart';
  // Import halaman OrderHistoryPage
 
 class AccountPage extends StatelessWidget {
-  const AccountPage({Key? key}) : super(key: key);
+  const AccountPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -102,9 +102,9 @@ class AccountPage extends StatelessWidget {
                 child: const Icon(Icons.person, color: Colors.white),
               ),
               const SizedBox(width: 16),
-              Column(
+              const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text('Melar', style: TextStyle(fontWeight: FontWeight.bold)),
                   Text('See your profile', style: TextStyle(color: Colors.black54)),
                 ],
@@ -127,9 +127,9 @@ class AccountPage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
+          const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text('Start Renting!', style: TextStyle(fontWeight: FontWeight.bold)),
               Text('Renting', style: TextStyle(color: Colors.green)),
             ],
@@ -161,7 +161,7 @@ class AccountPage extends StatelessWidget {
             // Arahkan ke halaman OrderHistoryPage
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => OrderHistoryPage()),
+              MaterialPageRoute(builder: (context) => const OrderHistoryPage()),
             );
           }
         ),

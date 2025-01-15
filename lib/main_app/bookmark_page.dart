@@ -5,7 +5,7 @@ import 'notification_page.dart';
 import 'account_page.dart';
 
 class BookmarkPage extends StatelessWidget {
-  const BookmarkPage({Key? key}) : super(key: key);
+  const BookmarkPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +46,12 @@ class BookmarkPage extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: TextField(
+                child: const TextField(
                   decoration: InputDecoration(
                     hintText: 'Search for bookmarks',
-                    prefixIcon: const Icon(Icons.search, color: Colors.green),
+                    prefixIcon: Icon(Icons.search, color: Colors.green),
                     border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 14),
+                    contentPadding: EdgeInsets.symmetric(vertical: 14),
                   ),
                 ),
               ),
@@ -83,10 +83,10 @@ class BookmarkPage extends StatelessWidget {
                           ),
                           const SizedBox(width: 16),
                           // Store Info
-                          Expanded(
+                          const Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
+                              children: [
                                 Text(
                                   'storeName',
                                   style: TextStyle(

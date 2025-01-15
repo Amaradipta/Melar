@@ -5,7 +5,7 @@ import 'cart_page.dart';
 import 'home_page.dart';
 
 class NotificationPage extends StatelessWidget {
-  const NotificationPage({Key? key}) : super(key: key);
+  const NotificationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +13,11 @@ class NotificationPage extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Row(
+          title: const Row(
             children: [
-              const Icon(Icons.arrow_back, color: Colors.green),
-              const SizedBox(width: 8),
-              const Text(
+              Icon(Icons.arrow_back, color: Colors.green),
+              SizedBox(width: 8),
+              Text(
                 'Notification (3)',
                 style: TextStyle(color: Colors.green),
               ),
@@ -27,8 +27,8 @@ class NotificationPage extends StatelessWidget {
           elevation: 0,
           leadingWidth: 0,
           leading: const SizedBox(),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(48.0),
+          bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(48.0),
             child: TabBar(
               labelColor: Colors.green,
               unselectedLabelColor: Colors.grey,
@@ -38,7 +38,7 @@ class NotificationPage extends StatelessWidget {
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text('My Notification'),
                       SizedBox(width: 4),
                       CircleAvatar(
@@ -55,7 +55,7 @@ class NotificationPage extends StatelessWidget {
                 Tab(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text('Store Notification'),
                       SizedBox(width: 4),
                       CircleAvatar(

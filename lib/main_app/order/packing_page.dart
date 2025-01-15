@@ -6,10 +6,10 @@ class PackingPage extends StatefulWidget {
   final Function(String orderId) onOrderUpdated; // Callback function to update status in orderHistory_page.dart
 
   const PackingPage({
-    Key? key,
+    super.key,
     required this.orderId,
     required this.onOrderUpdated, // Accept the callback function
-  }) : super(key: key);
+  });
 
   @override
   _PackingPageState createState() => _PackingPageState();
@@ -27,8 +27,8 @@ class _PackingPageState extends State<PackingPage> {
   }
 
   void _startCountdown() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (DateTime.now().isAfter(packingStartTime.add(Duration(hours: 48)))) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (DateTime.now().isAfter(packingStartTime.add(const Duration(hours: 48)))) {
         _timer.cancel(); // Stop the timer when the countdown reaches zero
       }
       setState(() {}); // Update the UI every second
@@ -48,7 +48,7 @@ class _PackingPageState extends State<PackingPage> {
         title: Row(
           children: [
             IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.green),
+              icon: const Icon(Icons.arrow_back, color: Colors.green),
               onPressed: () {
                 Navigator.pop(context);
               },
